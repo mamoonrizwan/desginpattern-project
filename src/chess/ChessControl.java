@@ -43,12 +43,7 @@ import pieces.Rook;
 public class ChessControl extends Container implements MouseListener {
 	private static final long serialVersionUID = 1L;
 
-	private Rook wr01, wr02, br01, br02;
-	private Knight wk01, wk02, bk01, bk02;
-	private Bishop wb01, wb02, bb01, bb02;
-	private Pawn wp[], bp[];
-	private Queen wq, bq;
-	private King wk, bk;
+	private ChessPieces chesspieces = new ChessPieces();
 	private Cell c, previous;
 	private int chance = 0;
 	private Cell boardState[][];
@@ -68,64 +63,24 @@ public class ChessControl extends Container implements MouseListener {
 
 	private void init() {
 		// variable initialization
+		
 		initializePieces();
+		initializeBoard();
+		initializeCells();
+		setInactiveLayout();
+	}
+
+	private void initializeBoard() {
 		board = new JPanel(new GridLayout(8, 8));
 		board.setMinimumSize(new Dimension(800, 700));
 		board.setBorder(BorderFactory.createLoweredBevelBorder());
-		
-		this.setBackground(Color.black);
-		this.setLayout(new BorderLayout());
-
-		Cell cell;
-		pieces.Piece P;
-		// Defining all the Cells
-		boardState = new Cell[8][8];
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++) {
-				P = null;
-				if (i == 0 && j == 0)
-					P = br01;
-				else if (i == 0 && j == 7)
-					P = br02;
-				else if (i == 7 && j == 0)
-					P = wr01;
-				else if (i == 7 && j == 7)
-					P = wr02;
-				else if (i == 0 && j == 1)
-					P = bk01;
-				else if (i == 0 && j == 6)
-					P = bk02;
-				else if (i == 7 && j == 1)
-					P = wk01;
-				else if (i == 7 && j == 6)
-					P = wk02;
-				else if (i == 0 && j == 2)
-					P = bb01;
-				else if (i == 0 && j == 5)
-					P = bb02;
-				else if (i == 7 && j == 2)
-					P = wb01;
-				else if (i == 7 && j == 5)
-					P = wb02;
-				else if (i == 0 && j == 3)
-					P = bk;
-				else if (i == 0 && j == 4)
-					P = bq;
-				else if (i == 7 && j == 3)
-					P = wk;
-				else if (i == 7 && j == 4)
-					P = wq;
-				else if (i == 1)
-					P = bp[j];
-				else if (i == 6)
-					P = wp[j];
-				cell = new Cell(i, j, P);
-				cell.addMouseListener(this);
-				board.add(cell);
-				boardState[i][j] = cell;
-			}
 		board.setMinimumSize(new Dimension(800, 700));
 
+		this.setBackground(Color.black);
+		this.setLayout(new BorderLayout());
+	}
+
+	private void setInactiveLayout() {
 		// The Left Layout When Game is inactive
 		temp = new JPanel() {
 			private static final long serialVersionUID = 1L;
@@ -152,28 +107,79 @@ public class ChessControl extends Container implements MouseListener {
 		this.revalidate();
 	}
 
+	private void initializeCells() {
+		Cell cell;
+		pieces.Piece P;
+		// Defining all the Cells
+		boardState = new Cell[8][8];
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++) {
+				P = null;
+				if (i == 0 && j == 0)
+					P = chesspieces.getBlackrook1();
+				else if (i == 0 && j == 7)
+					P = chesspieces.getBlackRook2();
+				else if (i == 7 && j == 0)
+					P = chesspieces.getWhiterook1();
+				else if (i == 7 && j == 7)
+					P = chesspieces.getWhiterook2();
+				else if (i == 0 && j == 1)
+					P = chesspieces.getBlackKnight1();
+				else if (i == 0 && j == 6)
+					P = chesspieces.getBlackKnight2();
+				else if (i == 7 && j == 1)
+					P = chesspieces.getWhiteKnight1();
+				else if (i == 7 && j == 6)
+					P = chesspieces.getWhiteKnight2();
+				else if (i == 0 && j == 2)
+					P = chesspieces.getBlackBishop1();
+				else if (i == 0 && j == 5)
+					P = chesspieces.getBlackBishop2();
+				else if (i == 7 && j == 2)
+					P = chesspieces.getWhiteBishop1();
+				else if (i == 7 && j == 5)
+					P = chesspieces.getWhiteBishop2();
+				else if (i == 0 && j == 3)
+					P = chesspieces.getBlackKing();
+				else if (i == 0 && j == 4)
+					P = chesspieces.getBlackQueen();
+				else if (i == 7 && j == 3)
+					P = chesspieces.getWhiteKing();
+				else if (i == 7 && j == 4)
+					P = chesspieces.getWhiteQueen();
+				else if (i == 1)
+					P = chesspieces.getBlackPawn()[j];
+				else if (i == 6)
+					P = chesspieces.getWhitePawn()[j];
+				cell = new Cell(i, j, P);
+				cell.addMouseListener(this);
+				board.add(cell);
+				boardState[i][j] = cell;
+			}
+	}
+
 	private void initializePieces() {
-		wr01 = new Rook("WR01", "White_Rook.png", 0);
-		wr02 = new Rook("WR02", "White_Rook.png", 0);
-		br01 = new Rook("BR01", "Black_Rook.png", 1);
-		br02 = new Rook("BR02", "Black_Rook.png", 1);
-		wk01 = new Knight("WK01", "White_Knight.png", 0);
-		wk02 = new Knight("WK02", "White_Knight.png", 0);
-		bk01 = new Knight("BK01", "Black_Knight.png", 1);
-		bk02 = new Knight("BK02", "Black_Knight.png", 1);
-		wb01 = new Bishop("WB01", "White_Bishop.png", 0);
-		wb02 = new Bishop("WB02", "White_Bishop.png", 0);
-		bb01 = new Bishop("BB01", "Black_Bishop.png", 1);
-		bb02 = new Bishop("BB02", "Black_Bishop.png", 1);
-		wq = new Queen("WQ", "White_Queen.png", 0);
-		bq = new Queen("BQ", "Black_Queen.png", 1);
-		wk = new King("WK", "White_King.png", 0, 7, 3);
-		bk = new King("BK", "Black_King.png", 1, 0, 3);
-		wp = new Pawn[8];
-		bp = new Pawn[8];
+		chesspieces.setWhiterook1(new Rook("WR01", "White_Rook.png", 0));
+		chesspieces.setWhiterook2(new Rook("WR02", "White_Rook.png", 0));
+		chesspieces.setBlackrook1(new Rook("BR01", "Black_Rook.png", 1));
+		chesspieces.setBlackRook2(new Rook("BR02", "Black_Rook.png", 1));
+		chesspieces.setWhiteKnight1(new Knight("WK01", "White_Knight.png", 0));
+		chesspieces.setWhiteKnight2(new Knight("WK02", "White_Knight.png", 0));
+		chesspieces.setBlackKnight1(new Knight("BK01", "Black_Knight.png", 1));
+		chesspieces.setBlackKnight2(new Knight("BK02", "Black_Knight.png", 1));
+		chesspieces.setWhiteBishop1(new Bishop("WB01", "White_Bishop.png", 0));
+		chesspieces.setWhiteBishop2(new Bishop("WB02", "White_Bishop.png", 0));
+		chesspieces.setBlackBishop1(new Bishop("BB01", "Black_Bishop.png", 1));
+		chesspieces.setBlackBishop2(new Bishop("BB02", "Black_Bishop.png", 1));
+		chesspieces.setWhiteQueen(new Queen("WQ", "White_Queen.png", 0));
+		chesspieces.setBlackQueen(new Queen("BQ", "Black_Queen.png", 1));
+		chesspieces.setWhiteKing(new King("WK", "White_King.png", 0, 7, 3));
+		chesspieces.setBlackKing(new King("BK", "Black_King.png", 1, 0, 3));
+		chesspieces.setWhitePawn(new Pawn[8]);
+		chesspieces.setBlackPawn(new Pawn[8]);
 		for (int i = 0; i < 8; i++) {
-			wp[i] = new Pawn("WP0" + (i + 1), "White_Pawn.png", 0);
-			bp[i] = new Pawn("BP0" + (i + 1), "Black_Pawn.png", 1);
+			chesspieces.getWhitePawn()[i] = new Pawn("WP0" + (i + 1), "White_Pawn.png", 0);
+			chesspieces.getBlackPawn()[i] = new Pawn("BP0" + (i + 1), "Black_Pawn.png", 1);
 		}
 	}
 
@@ -200,9 +206,9 @@ public class ChessControl extends Container implements MouseListener {
 	// A function to retrieve the Black King or White King
 	private King getKing(int color) {
 		if (color == 0)
-			return wk;
+			return chesspieces.getWhiteKing();
 		else
-			return bk;
+			return chesspieces.getBlackKing();
 	}
 
 	// A function to clean the highlights of possible destination cells
