@@ -71,38 +71,54 @@ public class King extends Piece {
 
 	private boolean isInDangerFromOpponentPawns(Cell[][] state) {
 		if (getcolor().equals(Color.WHITE)) {
-			if (x > 0
-					&& y > 0
-					&& state[x - 1][y - 1].getpiece() != null
-					&& state[x - 1][y - 1].getpiece().getcolor()
-							.equals(Color.BLACK)
-					&& (state[x - 1][y - 1].getpiece() instanceof Pawn))
+			if (isInDangerFromLeftPawn(state))
 				return true;
-			if (x > 0
-					&& y < 7
-					&& state[x - 1][y + 1].getpiece() != null
-					&& state[x - 1][y + 1].getpiece().getcolor()
-							.equals(Color.BLACK)
-					&& (state[x - 1][y + 1].getpiece() instanceof Pawn))
+			if (isInDangerFromTopPawn(state))
 				return true;
 		}
 		else {
-			if (x < 7
-					&& y > 0
-					&& state[x + 1][y - 1].getpiece() != null
-					&& state[x + 1][y - 1].getpiece().getcolor()
-							.equals(Color.WHITE)
-					&& (state[x + 1][y - 1].getpiece() instanceof Pawn))
+			if (isInDangerFromBottomPawn(state))
 				return true;
-			if (x < 7
-					&& y < 7
-					&& state[x + 1][y + 1].getpiece() != null
-					&& state[x + 1][y + 1].getpiece().getcolor()
-							.equals(Color.WHITE)
-					&& (state[x + 1][y + 1].getpiece() instanceof Pawn))
+			if (isInDangerFromRightPawn(state))
 				return true;
 		}
 		return false;
+	}
+
+	private boolean isInDangerFromRightPawn(Cell[][] state) {
+		return x < 7
+				&& y < 7
+				&& state[x + 1][y + 1].getpiece() != null
+				&& state[x + 1][y + 1].getpiece().getcolor()
+						.equals(Color.WHITE)
+				&& (state[x + 1][y + 1].getpiece() instanceof Pawn);
+	}
+
+	private boolean isInDangerFromBottomPawn(Cell[][] state) {
+		return x < 7
+				&& y > 0
+				&& state[x + 1][y - 1].getpiece() != null
+				&& state[x + 1][y - 1].getpiece().getcolor()
+						.equals(Color.WHITE)
+				&& (state[x + 1][y - 1].getpiece() instanceof Pawn);
+	}
+
+	private boolean isInDangerFromTopPawn(Cell[][] state) {
+		return x > 0
+				&& y < 7
+				&& state[x - 1][y + 1].getpiece() != null
+				&& state[x - 1][y + 1].getpiece().getcolor()
+						.equals(Color.BLACK)
+				&& (state[x - 1][y + 1].getpiece() instanceof Pawn);
+	}
+
+	private boolean isInDangerFromLeftPawn(Cell[][] state) {
+		return x > 0
+				&& y > 0
+				&& state[x - 1][y - 1].getpiece() != null
+				&& state[x - 1][y - 1].getpiece().getcolor()
+						.equals(Color.BLACK)
+				&& (state[x - 1][y - 1].getpiece() instanceof Pawn);
 	}
 
 	private boolean isInDangerFromOpponentKnight(Cell[][] state) {

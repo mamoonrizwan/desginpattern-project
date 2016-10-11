@@ -1,0 +1,950 @@
+Found a 59 line (402 tokens) duplication in the following files: 
+Starting at line 117 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 40 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+		int tempy = y + 1;
+		while (tempy < 8) {
+			if (state[x][tempy].getpiece() == null)
+				possibleMoves.add(state[x][tempy]);
+			else if (state[x][tempy].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[x][tempy]);
+				break;
+			}
+			tempy++;
+		}
+	}
+
+	private void addDownwardMoves(Cell[][] state, int x, int y) {
+		int tempy = y - 1;
+		while (tempy >= 0) {
+			if (state[x][tempy].getpiece() == null)
+				possibleMoves.add(state[x][tempy]);
+			else if (state[x][tempy].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[x][tempy]);
+				break;
+			}
+			tempy--;
+		}
+	}
+
+	private void addRightMoves(Cell[][] state, int x, int y) {
+		int tempx = x + 1;
+		while (tempx < 8) {
+			if (state[tempx][y].getpiece() == null)
+				possibleMoves.add(state[tempx][y]);
+			else if (state[tempx][y].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][y]);
+				break;
+			}
+			tempx++;
+		}
+	}
+
+	private void addLeftMoves(Cell[][] state, int x, int y) {
+		int tempx = x - 1;
+		while (tempx >= 0) {
+			if (state[tempx][y].getpiece() == null)
+				possibleMoves.add(state[tempx][y]);
+			else if (state[tempx][y].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][y]);
+				break;
+			}
+			tempx--;
+		}
+	}
+}
+=====================================================================
+Found a 5 line (122 tokens) duplication in the following files: 
+Starting at line 109 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 31 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Knight.java
+
+		int posx[] = { x + 1, x + 1, x + 2, x + 2, x - 1, x - 1, x - 2, x - 2 };
+		int posy[] = { y - 2, y + 2, y - 1, y + 1, y - 2, y + 2, y - 1, y + 1 };
+		for (int i = 0; i < 8; i++)
+			if ((posx[i] >= 0 && posx[i] < 8 && posy[i] >= 0 && posy[i] < 8))
+				if (state[posx[i]][posy[i]].getpiece() != null
+=====================================================================
+Found a 14 line (121 tokens) duplication in the following files: 
+Starting at line 350 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 410 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+			destinationlist = currentCell.getpiece().possibleMovesCells(boardState, currentCell.getx(), currentCell.gety());
+			if (currentCell.getpiece() instanceof King)
+				destinationlist = filterKingDangerDestinations(destinationlist, currentCell);
+			else {
+				if (boardState[getKing(activePlayerColor).getx()][getKing(activePlayerColor)
+						.gety()].ischeck())
+					destinationlist = new ArrayList<Cell>(
+							filterKingDangerDestinations(destinationlist, currentCell));
+				else if (destinationlist.isEmpty() == false
+						&& willKingBeInDanger(currentCell, destinationlist.get(0)))
+					destinationlist.clear();
+			}
+			highlightDestinations(destinationlist);
+		}
+=====================================================================
+Found a 12 line (118 tokens) duplication in the following files: 
+Starting at line 248 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 283 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+		List<Cell> newlist = new ArrayList<Cell>();
+		Cell newBoardState[][];
+		ListIterator<Cell> it = destList.listIterator();
+		int x, y;
+		while (it.hasNext()) {
+			newBoardState = cloneBoardState();
+
+			Cell tempc = it.next();
+			if (newBoardState[tempc.getx()][tempc.gety()].getpiece() != null)
+				newBoardState[tempc.getx()][tempc.gety()].removePiece();
+			newBoardState[tempc.getx()][tempc.gety()]
+					.setPiece(newBoardState[fromCell.getx()][fromCell.gety()].getpiece());
+=====================================================================
+Found a 19 line (109 tokens) duplication in the following files: 
+Starting at line 56 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addNEMoves(Cell state[][], int x, int y) {
+		int tempx = x - 1;
+		int tempy = y + 1;
+		while (tempx >= 0 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx--;
+			tempy++;
+		}
+	}
+
+	private void addSWMoves(Cell state[][], int x, int y) {
+=====================================================================
+Found a 19 line (109 tokens) duplication in the following files: 
+Starting at line 74 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addSWMoves(Cell state[][], int x, int y) {
+		int tempx = x - 1;
+		int tempy = y - 1;
+		while (tempx >= 0 && tempy >= 0) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx--;
+			tempy--;
+		}
+	}
+
+	private void addSEMoves(Cell state[][], int x, int y) {
+=====================================================================
+Found a 17 line (107 tokens) duplication in the following files: 
+Starting at line 92 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addSEMoves(Cell state[][], int x, int y) {
+		int tempx = x + 1;
+		int tempy = y + 1;
+		while (tempx < 8 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx++;
+			tempy++;
+		}
+	}
+=====================================================================
+Found a 9 line (100 tokens) duplication in the following files: 
+Starting at line 262 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 296 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+			if (newBoardState[fromCell.getx()][fromCell.gety()].getpiece() instanceof King) {
+				((King) (newBoardState[tempc.getx()][tempc.gety()].getpiece()))
+						.setx(tempc.getx());
+				((King) (newBoardState[tempc.getx()][tempc.gety()].getpiece()))
+						.sety(tempc.gety());
+				x = tempc.getx();
+				y = tempc.gety();
+			}
+			newBoardState[fromCell.getx()][fromCell.gety()].removePiece();
+=====================================================================
+Found a 18 line (92 tokens) duplication in the following files: 
+Starting at line 139 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 157 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+		for (int i = y - 1; i >= 0; i--) {
+			if (state[x][i].getpiece() == null)
+				continue;
+			else if (state[x][i].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				if ((state[x][i].getpiece() instanceof Rook)
+						|| (state[x][i].getpiece() instanceof Queen))
+					return true;
+				else
+					break;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isInDangerFromUp(Cell[][] state) {
+=====================================================================
+Found a 18 line (92 tokens) duplication in the following files: 
+Starting at line 174 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 192 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+		for (int i = x - 1; i >= 0; i--) {
+			if (state[i][y].getpiece() == null)
+				continue;
+			else if (state[i][y].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				if ((state[i][y].getpiece() instanceof Rook)
+						|| (state[i][y].getpiece() instanceof Queen))
+					return true;
+				else
+					break;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isInDangerFromLeft(Cell[][] state) {
+=====================================================================
+Found a 11 line (77 tokens) duplication in the following files: 
+Starting at line 59 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 95 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 47 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 83 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+		while (tempx >= 0 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx--;
+=====================================================================
+Found a 11 line (77 tokens) duplication in the following files: 
+Starting at line 77 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 65 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 101 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+		while (tempx >= 0 && tempy >= 0) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx--;
+=====================================================================
+Found a 12 line (75 tokens) duplication in the following files: 
+Starting at line 59 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 77 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 65 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 83 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+		while (tempx >= 0 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx--;
+			tempy++;
+=====================================================================
+Found a 12 line (75 tokens) duplication in the following files: 
+Starting at line 95 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 47 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 101 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+		while (tempx < 8 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx++;
+			tempy++;
+=====================================================================
+Found a 11 line (73 tokens) duplication in the following files: 
+Starting at line 59 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 83 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 101 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+		while (tempx >= 0 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx--;
+=====================================================================
+Found a 11 line (73 tokens) duplication in the following files: 
+Starting at line 77 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 95 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 47 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 65 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+		while (tempx >= 0 && tempy >= 0) {
+			if (state[tempx][tempy].getpiece() == null)
+				possibleMoves.add(state[tempx][tempy]);
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx--;
+=====================================================================
+Found a 10 line (73 tokens) duplication in the following files: 
+Starting at line 118 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 133 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 41 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+Starting at line 56 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+		while (tempy < 8) {
+			if (state[x][tempy].getpiece() == null)
+				possibleMoves.add(state[x][tempy]);
+			else if (state[x][tempy].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[x][tempy]);
+				break;
+			}
+			tempy++;
+=====================================================================
+Found a 10 line (73 tokens) duplication in the following files: 
+Starting at line 148 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 163 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 71 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+Starting at line 86 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+		while (tempx < 8) {
+			if (state[tempx][y].getpiece() == null)
+				possibleMoves.add(state[tempx][y]);
+			else if (state[tempx][y].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][y]);
+				break;
+			}
+			tempx++;
+=====================================================================
+Found a 18 line (72 tokens) duplication in the following files: 
+Starting at line 214 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 260 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+				tempy--;
+			}
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				if (state[tempx][tempy].getpiece() instanceof Bishop
+						|| state[tempx][tempy].getpiece() instanceof Queen)
+					return true;
+				else
+					break;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isInDangerFromDiagonal2(Cell[][] state) {
+=====================================================================
+Found a 17 line (70 tokens) duplication in the following files: 
+Starting at line 215 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 238 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 261 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+			}
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				if (state[tempx][tempy].getpiece() instanceof Bishop
+						|| state[tempx][tempy].getpiece() instanceof Queen)
+					return true;
+				else
+					break;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isInDangerFromDiagonal2(Cell[][] state) {
+=====================================================================
+Found a 16 line (70 tokens) duplication in the following files: 
+Starting at line 237 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 283 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+				tempy++;
+			}
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				if (state[tempx][tempy].getpiece() instanceof Bishop
+						|| state[tempx][tempy].getpiece() instanceof Queen)
+					return true;
+				else
+					break;
+			}
+		}
+
+		return false;
+	}
+=====================================================================
+Found a 15 line (68 tokens) duplication in the following files: 
+Starting at line 215 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 261 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 284 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+			}
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				if (state[tempx][tempy].getpiece() instanceof Bishop
+						|| state[tempx][tempy].getpiece() instanceof Queen)
+					return true;
+				else
+					break;
+			}
+		}
+
+		return false;
+	}
+=====================================================================
+Found a 16 line (66 tokens) duplication in the following files: 
+Starting at line 20 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 20 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+				: BLACK_QUEEN_IMAGE);
+		setColor(c);
+	}
+
+	// Move Function Defined
+	@Override
+	public List<Cell> possibleMovesCells(Cell state[][], int x, int y) {
+		// Queen has most number of possible moves
+		// Queen can move any number of steps in all 8 direction
+		// The possible moves of queen is a combination of Rook and Bishop
+		possibleMoves.clear();
+
+		addLeftMoves(state, x, y);
+		addRightMoves(state, x, y);
+		addDownwardMoves(state, x, y);
+		addUpwardMoves(state, x, y);
+=====================================================================
+Found a 3 line (53 tokens) duplication in the following files: 
+Starting at line 49 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 34 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Knight.java
+
+			if (posx[i] >= 0 && posx[i] < 8 && posy[i] >= 0 && posy[i] < 8)
+				if ((state[posx[i]][posy[i]].getpiece() == null || state[posx[i]][posy[i]]
+						.getpiece().getcolor() != this.getcolor()))
+=====================================================================
+Found a 13 line (50 tokens) duplication in the following files: 
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 104 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx++;
+			tempy--;
+		}
+	}
+
+	private void addNEMoves(Cell state[][], int x, int y) {
+=====================================================================
+Found a 8 line (48 tokens) duplication in the following files: 
+Starting at line 270 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 304 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+			newBoardState[fromCell.getx()][fromCell.gety()].removePiece();
+			if (!(((King) (newBoardState[x][y].getpiece()))
+					.isInDanger(newBoardState)))
+				newlist.add(tempc);
+		}
+		
+		return newlist;
+	}
+=====================================================================
+Found a 6 line (48 tokens) duplication in the following files: 
+Starting at line 387 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 430 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+			if (currentCell.getpiece() instanceof King) {
+				((King) currentCell.getpiece())
+						.setx(currentCell.getx());
+				((King) currentCell.getpiece())
+						.sety(currentCell.gety());
+			}
+=====================================================================
+Found a 5 line (47 tokens) duplication in the following files: 
+Starting at line 37 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 98 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addNWMoves(Cell state[][], int x, int y) {
+		int tempx = x + 1;
+		int tempy = y - 1;
+		while (tempx < 8 && tempy >= 0) {
+			if (state[tempx][tempy].getpiece() == null) {
+=====================================================================
+Found a 9 line (45 tokens) duplication in the following files: 
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 98 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 50 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx++;
+			tempy--;
+=====================================================================
+Found a 8 line (43 tokens) duplication in the following files: 
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 68 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 86 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+				break;
+			}
+			tempx++;
+=====================================================================
+Found a 10 line (41 tokens) duplication in the following files: 
+Starting at line 27 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\Cell.java
+Starting at line 43 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\Cell.java
+
+		this.y = y;
+
+		setLayout(new BorderLayout());
+
+		if ((x + y) % 2 == 0)
+			setBackground(new Color(113, 198, 113));
+		else
+			setBackground(Color.white);
+
+		if (p != null)
+=====================================================================
+Found a 5 line (41 tokens) duplication in the following files: 
+Starting at line 56 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 231 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addNEMoves(Cell state[][], int x, int y) {
+		int tempx = x - 1;
+		int tempy = y + 1;
+		while (tempx >= 0 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+=====================================================================
+Found a 5 line (41 tokens) duplication in the following files: 
+Starting at line 74 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 254 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addSWMoves(Cell state[][], int x, int y) {
+		int tempx = x - 1;
+		int tempy = y - 1;
+		while (tempx >= 0 && tempy >= 0) {
+			if (state[tempx][tempy].getpiece() == null)
+=====================================================================
+Found a 5 line (41 tokens) duplication in the following files: 
+Starting at line 92 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 277 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addSEMoves(Cell state[][], int x, int y) {
+		int tempx = x + 1;
+		int tempy = y + 1;
+		while (tempx < 8 && tempy < 8) {
+			if (state[tempx][tempy].getpiece() == null)
+=====================================================================
+Found a 9 line (36 tokens) duplication in the following files: 
+Starting at line 38 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 23 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Knight.java
+
+	}
+
+	// Move Function for King Overridden from Pieces
+	@Override
+	public List<Cell> possibleMovesCells(Cell state[][], int x, int y) {
+		// King can move only one step. So all the adjacent 8 cells have been
+		// considered.
+		possibleMoves.clear();
+		int posx[] = { x, x, x + 1, x + 1, x + 1, x - 1, x - 1, x - 1 };
+=====================================================================
+Found a 7 line (34 tokens) duplication in the following files: 
+Starting at line 22 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 21 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Knight.java
+Starting at line 20 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 20 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 20 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+				: BLACK_BISHOP_IMAGE);
+		setColor(c);
+	}
+
+	@Override
+	public List<Cell> possibleMovesCells(Cell state[][], int x, int y) {
+		possibleMoves.clear();
+=====================================================================
+Found a 8 line (33 tokens) duplication in the following files: 
+Starting at line 195 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 206 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+	private void clearDestinations(List<Cell> destList) // Function to
+																// clear the
+																// last move's
+																// destinations
+	{
+		ListIterator<Cell> it = destList.listIterator();
+		while (it.hasNext())
+			it.next().clearPossibleDestination();
+=====================================================================
+Found a 3 line (33 tokens) duplication in the following files: 
+Starting at line 39 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 210 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+		int tempy = y - 1;
+		while (tempx < 8 && tempy >= 0) {
+			if (state[tempx][tempy].getpiece() == null) {
+=====================================================================
+Found a 6 line (32 tokens) duplication in the following files: 
+Starting at line 29 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\Cell.java
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\Cell.java
+Starting at line 122 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\Cell.java
+
+		setLayout(new BorderLayout());
+
+		if ((x + y) % 2 == 0)
+			setBackground(new Color(113, 198, 113));
+		else
+			setBackground(Color.white);
+=====================================================================
+Found a 3 line (32 tokens) duplication in the following files: 
+Starting at line 210 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 100 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+		int tempx = x + 1, tempy = y - 1;
+		while (tempx < 8 && tempy >= 0) {
+			if (state[tempx][tempy].getpiece() == null) {
+=====================================================================
+Found a 3 line (30 tokens) duplication in the following files: 
+Starting at line 57 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+
+				&& (state[x + 1][y - 1].getpiece().getcolor() != this
+						.getcolor()))
+			possibleMoves.add(state[x + 1][y - 1]);
+=====================================================================
+Found a 3 line (30 tokens) duplication in the following files: 
+Starting at line 57 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+
+				&& (state[x + 1][y - 1].getpiece().getcolor() != this
+						.getcolor()))
+			possibleMoves.add(state[x + 1][y - 1]);
+=====================================================================
+Found a 3 line (30 tokens) duplication in the following files: 
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 85 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+
+				&& (state[x + 1][y + 1].getpiece().getcolor() != this
+						.getcolor()))
+			possibleMoves.add(state[x + 1][y + 1]);
+=====================================================================
+Found a 3 line (30 tokens) duplication in the following files: 
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 85 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+
+				&& (state[x - 1][y - 1].getpiece().getcolor() != this
+						.getcolor()))
+			possibleMoves.add(state[x - 1][y - 1]);
+=====================================================================
+Found a 5 line (29 tokens) duplication in the following files: 
+Starting at line 24 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 38 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 22 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 22 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 22 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+	}
+
+	@Override
+	public List<Cell> possibleMovesCells(Cell state[][], int x, int y) {
+		possibleMoves.clear();
+=====================================================================
+Found a 5 line (29 tokens) duplication in the following files: 
+Starting at line 43 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 215 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 238 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 261 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 284 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+			}
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+=====================================================================
+Found a 1 line (29 tokens) duplication in the following files: 
+Starting at line 49 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 112 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 34 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Knight.java
+
+			if (posx[i] >= 0 && posx[i] < 8 && posy[i] >= 0 && posy[i] < 8)
+=====================================================================
+Found a 1 line (28 tokens) duplication in the following files: 
+Starting at line 163 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 354 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 416 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+		if (boardState[getKing(activePlayerColor).getx()][getKing(activePlayerColor).gety()].ischeck()) {
+=====================================================================
+Found a 1 line (28 tokens) duplication in the following files: 
+Starting at line 219 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 258 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+		newBoardState[toCell.getx()][toCell.gety()].setPiece(newBoardState[fromCell.getx()][fromCell.gety()].getpiece());
+=====================================================================
+Found a 5 line (28 tokens) duplication in the following files: 
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 98 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 50 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 68 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 86 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 104 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 121 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 136 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+Starting at line 59 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+=====================================================================
+Found a 5 line (28 tokens) duplication in the following files: 
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 98 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 50 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 68 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 86 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 104 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 151 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 166 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 74 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+Starting at line 89 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[tempx][tempy]);
+=====================================================================
+Found a 4 line (28 tokens) duplication in the following files: 
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 98 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 216 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 239 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 262 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 285 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 50 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 68 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 86 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 104 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+			else if (state[tempx][tempy].getpiece().getcolor() == this
+					.getcolor())
+				break;
+			else {
+=====================================================================
+Found a 1 line (27 tokens) duplication in the following files: 
+Starting at line 221 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 222 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+			((King) (newBoardState[toCell.getx()][toCell.gety()].getpiece())).setx(toCell.getx());
+=====================================================================
+Found a 2 line (27 tokens) duplication in the following files: 
+Starting at line 263 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 265 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 297 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+Starting at line 299 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\ChessControl.java
+
+				((King) (newBoardState[tempc.getx()][tempc.gety()].getpiece()))
+						.setx(tempc.getx());
+=====================================================================
+Found a 2 line (27 tokens) duplication in the following files: 
+Starting at line 50 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 114 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 35 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Knight.java
+
+				if ((state[posx[i]][posy[i]].getpiece() == null || state[posx[i]][posy[i]]
+						.getpiece().getcolor() != this.getcolor()))
+=====================================================================
+Found a 3 line (27 tokens) duplication in the following files: 
+Starting at line 77 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 84 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+					&& state[x - 1][y - 1].getpiece().getcolor()
+							.equals(Color.BLACK)
+					&& (state[x - 1][y - 1].getpiece() instanceof Pawn))
+=====================================================================
+Found a 3 line (27 tokens) duplication in the following files: 
+Starting at line 93 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+Starting at line 100 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\King.java
+
+					&& state[x + 1][y - 1].getpiece().getcolor()
+							.equals(Color.WHITE)
+					&& (state[x + 1][y - 1].getpiece() instanceof Pawn))
+=====================================================================
+Found a 9 line (25 tokens) duplication in the following files: 
+Starting at line 92 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\Player.java
+Starting at line 171 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\chess\Player.java
+
+			JOptionPane.showMessageDialog(null, "Unable to read the required Game files !!");
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			JOptionPane
+					.showMessageDialog(null,
+							"Game Data File Corrupted !! Click Ok to Continue Builing New File");
+		}
+		catch (Exception e1) {
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 37 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 92 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+
+	private void addNWMoves(Cell state[][], int x, int y) {
+		int tempx = x + 1;
+		int tempy = y - 1;
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 56 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+Starting at line 74 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Bishop.java
+
+	private void addNEMoves(Cell state[][], int x, int y) {
+		int tempx = x - 1;
+		int tempy = y + 1;
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 57 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 85 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+
+				&& (state[x + 1][y - 1].getpiece().getcolor() != this
+						.getcolor()))
+			possibleMoves.add(state[x + 1][y - 1]);
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Pawn.java
+
+				&& (state[x + 1][y + 1].getpiece().getcolor() != this
+						.getcolor()))
+			possibleMoves.add(state[x + 1][y + 1]);
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 98 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addDiagonal4Moves(Cell[][] state, int x, int y) {
+		int tempx = x + 1;
+		int tempy = y + 1;
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 62 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 80 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+
+	private void addDiagonal3Moves(Cell[][] state, int x, int y) {
+		int tempx = x - 1;
+		int tempy = y - 1;
+=====================================================================
+Found a 4 line (25 tokens) duplication in the following files: 
+Starting at line 121 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 136 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 151 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 166 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Queen.java
+Starting at line 44 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+Starting at line 59 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+Starting at line 74 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+Starting at line 89 of C:\Users\mamoonrizwan\git\designpatterns-chessgame\src\pieces\Rook.java
+
+			else if (state[x][tempy].getpiece().getcolor() == this.getcolor())
+				break;
+			else {
+				possibleMoves.add(state[x][tempy]);
