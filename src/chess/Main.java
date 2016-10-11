@@ -4,6 +4,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class Main {
+	public static final String WINDOW_ICON_NAME = "icon.png";
+	public static final String WINDOW_TITLE = "Chess";
 
 	// Variable Declaration
 	private static final int HEIGHT = 700;
@@ -14,10 +16,10 @@ public class Main {
 		frame.getContentPane().add(new ChessControl());
 
 		frame.setSize(WIDTH, HEIGHT);
-		frame.setTitle("Chess");
+		frame.setTitle(WINDOW_TITLE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		ImageIcon img = new ImageIcon(Main.class.getResource("icon.png"));
+		ImageIcon img = new ImageIcon(Main.class.getResource(WINDOW_ICON_NAME));
 		frame.setIconImage(img.getImage());
 		frame.setVisible(true);
 		frame.setResizable(false);

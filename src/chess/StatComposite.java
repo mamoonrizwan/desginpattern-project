@@ -295,13 +295,13 @@ public class StatComposite extends JPanel {
 
 	}
 
-	public String endGame(int chance) {
+	public String endGame(Color chance) {
 		String winner;
 		startOrCountDownPanel.setEnabled(false);
 		timer.countdownTimer.stop();
 //		if (previous != null)
 //			previous.removePiece();
-		if (chance == 0) {
+		if (chance.equals(Color.WHITE)) {
 			White.updateGamesWon();
 			White.Update_Player();
 			winner = White.name();
