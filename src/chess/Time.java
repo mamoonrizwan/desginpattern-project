@@ -18,15 +18,14 @@ public class Time {
 	private JLabel label;
 	Timer countdownTimer;
 	private final int timeLimit;
-	private int Timerem;
+	private int timeRemaining;
 	private List<ActionListener> timerExpireListeners = new ArrayList<ActionListener>();
-	
 
 	public Time(JLabel passedLabel, int timeLimit) {
 		countdownTimer = new Timer(1000, new CountdownTimerListener());
 		this.label = passedLabel;
 		this.timeLimit = timeLimit;
-		Timerem = timeLimit;
+		timeRemaining = timeLimit;
 	}
 
 	// A function that starts the timer
@@ -36,7 +35,7 @@ public class Time {
 
 	// A function that resets the timer
 	public void reset() {
-		Timerem = timeLimit;
+		timeRemaining = timeLimit;
 	}
 
 	public void addTimerExpireListener(ActionListener al) {
@@ -46,17 +45,19 @@ public class Time {
 	// A function that is called after every second. It updates the timer and
 	// takes other necessary actions
 	class CountdownTimerListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			int min, sec;
-			if (Timerem > 0) {
-				min = Timerem / 60;
-				sec = Timerem % 60;
+			if (timeRemaining > 0) {
+				min = timeRemaining / 60;
+				sec = timeRemaining % 60;
 				label.setText(String.valueOf(min)
 						+ ":"
 						+ (sec >= 10 ? String.valueOf(sec) : "0"
 								+ String.valueOf(sec)));
-				Timerem--;
-			} else {
+				timeRemaining--;
+			}
+			else {
 				label.setText("Time's up!");
 				reset();
 				start();

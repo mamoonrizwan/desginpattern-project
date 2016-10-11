@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.imageio.ImageIO;
@@ -46,7 +47,7 @@ public class ChessControl extends Container {
 	private Cell currentCell, previousCell;
 	private Color activePlayerColor = Color.white;
 	private Cell boardState[][];
-	private ArrayList<Cell> destinationlist = new ArrayList<Cell>();
+	private List<Cell> destinationlist = new ArrayList<Cell>();
 	private JPanel board = new JPanel(new GridLayout(8, 8));
 	private JPanel inactivePanel;
 	private JSplitPane splitPane;
@@ -191,7 +192,7 @@ public class ChessControl extends Container {
 	}
 
 	// A function to clean the highlights of possible destination cells
-	private void clearDestinations(ArrayList<Cell> destList) // Function to
+	private void clearDestinations(List<Cell> destList) // Function to
 																// clear the
 																// last move's
 																// destinations
@@ -202,7 +203,7 @@ public class ChessControl extends Container {
 	}
 
 	// A function that indicates the possible moves by highlighting the Cells
-	private void highlightDestinations(ArrayList<Cell> destList) {
+	private void highlightDestinations(List<Cell> destList) {
 		ListIterator<Cell> it = destList.listIterator();
 		while (it.hasNext())
 			it.next().setPossibleDestination();
@@ -242,9 +243,9 @@ public class ChessControl extends Container {
 
 	// A function to eliminate the possible moves that will put the King in
 	// danger
-	private ArrayList<Cell> filterKingDangerDestinations(ArrayList<Cell> destList,
+	private List<Cell> filterKingDangerDestinations(List<Cell> destList,
 			Cell fromCell) {
-		ArrayList<Cell> newlist = new ArrayList<Cell>();
+		List<Cell> newlist = new ArrayList<Cell>();
 		Cell newBoardState[][];
 		ListIterator<Cell> it = destList.listIterator();
 		int x, y;
@@ -277,7 +278,7 @@ public class ChessControl extends Container {
 
 	// A Function to filter the possible moves when the king of the current
 	// player is under Check
-	private ArrayList<Cell> inCheckFilterDestinations(ArrayList<Cell> destList,
+	private List<Cell> inCheckFilterDestinations(List<Cell> destList,
 			Cell fromcell, Color color) {
 		ArrayList<Cell> newlist = new ArrayList<Cell>();
 		Cell newBoardState[][];
@@ -311,7 +312,7 @@ public class ChessControl extends Container {
 	// A function to check if the King is check-mate. The Game Ends if this
 	// function returns true.
 	public boolean checkmate(Color color) {
-		ArrayList<Cell> dlist = new ArrayList<Cell>();
+		List<Cell> dlist = new ArrayList<Cell>();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (boardState[i][j].getpiece() != null
@@ -368,11 +369,11 @@ public class ChessControl extends Container {
 				currentCell.removePiece();
 			currentCell.setPiece(previousCell.getpiece());
 			if (previousCell.ischeck())
-				previousCell.removecheck();
+				previousCell.removeCheck();
 			previousCell.removePiece();
 			if (getKing(getInactivePlayer()).isInDanger(boardState)) {
 				boardState[getKing(getInactivePlayer()).getx()][getKing(
-						getInactivePlayer()).gety()].setcheck();
+						getInactivePlayer()).gety()].setCheck();
 				if (checkmate(getKing(getInactivePlayer()).getcolor())) {
 					previousCell.deselect();
 					if (previousCell.getpiece() != null)
@@ -382,7 +383,7 @@ public class ChessControl extends Container {
 			}
 			if (getKing(activePlayerColor).isInDanger(boardState) == false)
 				boardState[getKing(activePlayerColor).getx()][getKing(
-						activePlayerColor).gety()].removecheck();
+						activePlayerColor).gety()].removeCheck();
 			if (currentCell.getpiece() instanceof King) {
 				((King) currentCell.getpiece())
 						.setx(currentCell.getx());
