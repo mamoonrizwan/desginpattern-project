@@ -22,52 +22,54 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.border.TitledBorder;
 
-
 public class StatComposite extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private static final String LABEL_TEXT_WHITE = "White";
+	private static final String LABEL_TEXT_BLACK = "Black";
 
-	private JPanel whiteDetails = new JPanel(new GridLayout(3, 3));
-	private JPanel blackDetails = new JPanel(new GridLayout(3, 3));
-	private JPanel whiteComboPanel = new JPanel();
-	private JPanel blackComboPanel = new JPanel();
-	private JPanel  whitePlayerPanel, blackPlayerPanel, startOrCountDownPanel,
+	private JPanel whiteDetails;
+	private JPanel blackDetails;
+	private JPanel whiteComboPanel;
+	private JPanel blackComboPanel;
+	private JPanel whitePlayerPanel, blackPlayerPanel, startOrCountDownPanel,
 			sliderOrActivePlayerName, timerAndActivePlayerDetailsPannel;
-	private JLabel countdownTimerLabel, mov;
-	private JLabel CHNC;
+	private JLabel countdownTimerLabel, moveLabel;
+	private JLabel chanceLabel;
 	private Time timer;
 	private JComboBox<String> whiteCombo, blackCombo;
-	
+
 	private JSlider timeSlider;
-	private Button startButton, whiteSelectButton, blackSelectButton, whiteNewPlayerButton, blackNewPlayerButton;
+	private Button startButton, whiteSelectButton, blackSelectButton,
+			whiteNewPlayerButton, blackNewPlayerButton;
 
 	private ArrayList<String> whitePlayerNames = new ArrayList<String>();
 	private ArrayList<String> blackPlayerNames = new ArrayList<String>();
-	String move;
-	
-	private Player White=null,Black=null;
-	private List<ActionListener> gameStartListeners = new ArrayList<ActionListener>(); 
+	String activePlayer;
+
+	private Player whitePlayer = null, blackPlayer = null;
+	private List<ActionListener> gameStartListeners = new ArrayList<ActionListener>();
 
 	public int timeRemaining = 60;
-	
+
 	private ArrayList<Player> wplayer, bplayer;
-	
+
 	private boolean selected;
-	
+
 	public StatComposite() {
 		createControl();
 	}
-	
+
 	private void createControl() {
 		timeRemaining = 60;
-		move = "White";
+		activePlayer = LABEL_TEXT_WHITE;
 		
-		timeSlider = new JSlider();
 		whiteDetails = new JPanel(new GridLayout(3, 3));
 		blackDetails = new JPanel(new GridLayout(3, 3));
 		blackComboPanel = new JPanel();
 		whiteComboPanel = new JPanel();
 		
 		// Time Slider Details
+		timeSlider = new JSlider();
 		timeSlider.setMinimum(1);
 		timeSlider.setMaximum(15);
 		timeSlider.setValue(1);
@@ -103,12 +105,12 @@ public class StatComposite extends JPanel {
 		blackComboPanel.setLayout(new FlowLayout());
 		whiteSelectButton = new Button("Select");
 		blackSelectButton = new Button("Select");
-		whiteSelectButton.addActionListener(new SelectHandler(0));
-		blackSelectButton.addActionListener(new SelectHandler(1));
+		whiteSelectButton.addActionListener(new SelectPlayerHandler(Color.WHITE));
+		blackSelectButton.addActionListener(new SelectPlayerHandler(Color.BLACK));
 		whiteNewPlayerButton = new Button("New Player");
 		blackNewPlayerButton = new Button("New Player");
-		whiteNewPlayerButton.addActionListener(new NewPlayerHandler(0));
-		blackNewPlayerButton.addActionListener(new NewPlayerHandler(1));
+		whiteNewPlayerButton.addActionListener(new NewPlayerHandler(Color.WHITE));
+		blackNewPlayerButton.addActionListener(new NewPlayerHandler(Color.BLACK));
 		whiteComboPanel.add(new JScrollPane(whiteCombo));
 		whiteComboPanel.add(whiteSelectButton);
 		whiteComboPanel.add(whiteNewPlayerButton);
@@ -134,7 +136,7 @@ public class StatComposite extends JPanel {
 		startButton = new Button("Start");
 		startButton.setBackground(Color.black);
 		startButton.setForeground(Color.white);
-		startButton.addActionListener(new START());
+		startButton.addActionListener(new StartActionValidator());
 		startButton.setPreferredSize(new Dimension(120, 40));
 		setTime.setFont(new Font("Arial", Font.BOLD, 16));
 		countdownTimerLabel = new JLabel("Time Starts now", JLabel.CENTER);
@@ -146,115 +148,110 @@ public class StatComposite extends JPanel {
 		startOrCountDownPanel.add(startButton);
 		timerAndActivePlayerDetailsPannel.add(startOrCountDownPanel);
 		this.add(timerAndActivePlayerDetailsPannel);
-		
 
 		this.setMinimumSize(new Dimension(285, 700));
 				
 	}
-	
+
 	public void updateChance() {
 		timer.reset();
 		timer.start();
-		sliderOrActivePlayerName.remove(CHNC);
-		if (move == "White")
-			move = "Black";
+		sliderOrActivePlayerName.remove(chanceLabel);
+		if (activePlayer == LABEL_TEXT_WHITE)
+			activePlayer = LABEL_TEXT_BLACK;
 		else
-			move = "White";
-		CHNC.setText(move);
-		sliderOrActivePlayerName.add(CHNC);
+			activePlayer = LABEL_TEXT_WHITE;
+		chanceLabel.setText(activePlayer);
+		sliderOrActivePlayerName.add(chanceLabel);
 	}
-	
-	public void restartTimer() {
-		timer.reset();
-		timer.start();
-	}
-	
+
 	private void gatherProfiles() {
-		wplayer = Player.fetch_players();
+		wplayer = Player.fetchPlayers();
 		Iterator<Player> witr = wplayer.iterator();
 		while (witr.hasNext())
 			whitePlayerNames.add(witr.next().name());
-		
 
-		bplayer = Player.fetch_players();
+		bplayer = Player.fetchPlayers();
 		Iterator<Player> bitr = bplayer.iterator();
 		while (bitr.hasNext())
 			blackPlayerNames.add(bitr.next().name());
 	}
-	
+
 	public void addGameStartListener(ActionListener actionListener) {
 		gameStartListeners.add(actionListener);
 	}
-	
-	class START implements ActionListener {
 
-		@SuppressWarnings("deprecation")
+	class StartActionValidator implements ActionListener {
+
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-
-			if (White == null || Black == null) {
+			if (whitePlayer == null || blackPlayer == null) {
 				JOptionPane.showMessageDialog(StatComposite.this,
 						"Fill in the details");
 				return;
 			}
+
 			timeRemaining = timeSlider.getValue() * 60;
-			
-			White.updateGamesPlayed();
-			White.Update_Player();
-			Black.updateGamesPlayed();
-			Black.Update_Player();
-			whiteNewPlayerButton.disable();
-			blackNewPlayerButton.disable();
-			whiteSelectButton.disable();
-			blackSelectButton.disable();
+
+			whitePlayer.updateGamesPlayed();
+			whitePlayer.updatePlayer();
+
+			blackPlayer.updateGamesPlayed();
+			blackPlayer.updatePlayer();
+
+			whiteNewPlayerButton.setEnabled(false);
+			blackNewPlayerButton.setEnabled(false);
+			whiteSelectButton.setEnabled(false);
+			blackSelectButton.setEnabled(false);
 
 			sliderOrActivePlayerName.remove(timeSlider);
-			mov = new JLabel("Move:");
-			mov.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-			mov.setForeground(Color.red);
-			sliderOrActivePlayerName.add(mov);
-			CHNC = new JLabel(move);
-			CHNC.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-			CHNC.setForeground(Color.blue);
-			sliderOrActivePlayerName.add(CHNC);
+			moveLabel = new JLabel("Move:");
+			moveLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+			moveLabel.setForeground(Color.red);
+			sliderOrActivePlayerName.add(moveLabel);
+			chanceLabel = new JLabel(activePlayer);
+			chanceLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+			chanceLabel.setForeground(Color.blue);
+			sliderOrActivePlayerName.add(chanceLabel);
 			startOrCountDownPanel.remove(startButton);
 			startOrCountDownPanel.add(countdownTimerLabel);
 			timer = new Time(countdownTimerLabel, timeRemaining);
 			timer.start();
-			
+
 			for (ActionListener al : gameStartListeners) {
 				al.actionPerformed(arg0);
 			}
 		}
 	}
-	
+
 	public void addTimerExpireListener(ActionListener al) {
 		timer.addTimerExpireListener(al);
 	}
-	
-	class SelectHandler implements ActionListener {
-		private int color;
 
-		SelectHandler(int i) {
-			color = i;
+	class SelectPlayerHandler implements ActionListener {
+		private Color color;
+
+		SelectPlayerHandler(Color color) {
+			this.color = color;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			Player tempPlayer = null;
-			String n = (color == 0) ? "White" : "Black";
-			JComboBox<String> jc = (color == 0) ? whiteCombo : blackCombo;
-			JComboBox<String> ojc = (color == 0) ? blackCombo : whiteCombo;
-			ArrayList<Player> pl = (color == 0) ? wplayer : bplayer;
-			// ArrayList<Player> otherPlayer=(color==0)?bplayer:wplayer;
-			ArrayList<Player> opl = Player.fetch_players();
+			String n;
+			JComboBox<String> jc = (color == Color.WHITE) ? whiteCombo
+					: blackCombo;
+			JComboBox<String> ojc = (color == Color.WHITE) ? blackCombo
+					: whiteCombo;
+			ArrayList<Player> pl = (color == Color.WHITE) ? wplayer : bplayer;
+			ArrayList<Player> opl = Player.fetchPlayers();
 			if (opl.isEmpty())
 				return;
-			JPanel det = (color == 0) ? whiteDetails : blackDetails;
-			JPanel PL = (color == 0) ? whitePlayerPanel : blackPlayerPanel;
-			if (selected == true)
-				det.removeAll();
+			JPanel detailsPanel = (color == Color.WHITE) ? whiteDetails : blackDetails;
+			JPanel palyerPanel = (color == Color.WHITE) ? whitePlayerPanel : blackPlayerPanel;
+			if (selected)
+				detailsPanel.removeAll();
+			
 			n = (String) jc.getSelectedItem();
 			Iterator<Player> it = pl.iterator();
 			Iterator<Player> oit = opl.iterator();
@@ -275,21 +272,21 @@ public class StatComposite extends JPanel {
 
 			if (tempPlayer == null)
 				return;
-			if (color == 0)
-				White = tempPlayer;
+			if (color == Color.WHITE)
+				whitePlayer = tempPlayer;
 			else
-				Black = tempPlayer;
+				blackPlayer = tempPlayer;
 			bplayer = opl;
 			ojc.removeAllItems();
 			for (Player s : opl)
 				ojc.addItem(s.name());
-			det.add(new JLabel(" " + tempPlayer.name()));
-			det.add(new JLabel(" " + tempPlayer.gamesplayed()));
-			det.add(new JLabel(" " + tempPlayer.gameswon()));
+			detailsPanel.add(new JLabel(" " + tempPlayer.name()));
+			detailsPanel.add(new JLabel(" " + tempPlayer.gamesPlayed()));
+			detailsPanel.add(new JLabel(" " + tempPlayer.gamesWon()));
 
-			PL.revalidate();
-			PL.repaint();
-			PL.add(det);
+			palyerPanel.revalidate();
+			palyerPanel.repaint();
+			palyerPanel.add(detailsPanel);
 			selected = true;
 		}
 
@@ -299,59 +296,62 @@ public class StatComposite extends JPanel {
 		String winner;
 		startOrCountDownPanel.setEnabled(false);
 		timer.countdownTimer.stop();
-//		if (previous != null)
-//			previous.removePiece();
 		if (chance.equals(Color.WHITE)) {
-			White.updateGamesWon();
-			White.Update_Player();
-			winner = White.name();
-		} else {
-			Black.updateGamesWon();
-			Black.Update_Player();
-			winner = Black.name();
+			whitePlayer.updateGamesWon();
+			whitePlayer.updatePlayer();
+			winner = whitePlayer.name();
 		}
-		
+		else {
+			blackPlayer.updateGamesWon();
+			blackPlayer.updatePlayer();
+			winner = blackPlayer.name();
+		}
+
 		return winner;
 	}
-	
-	class NewPlayerHandler implements ActionListener {
-		private int color;
 
-		NewPlayerHandler(int i) {
-			color = i;
+	class NewPlayerHandler implements ActionListener {
+		private Color color;
+
+		NewPlayerHandler(Color color) {
+			this.color = color;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String n = (color == 0) ? "White" : "Black";
-			JPanel j = (color == 0) ? whitePlayerPanel : blackPlayerPanel;
-			ArrayList<Player> N = Player.fetch_players();
-			Iterator<Player> it = N.iterator();
-			JPanel det = (color == 0) ? whiteDetails : blackDetails;
-			n = JOptionPane.showInputDialog(j, "Enter your name");
+			String name;
+			JPanel j = (color == Color.WHITE) ? whitePlayerPanel
+					: blackPlayerPanel;
+			ArrayList<Player> players = Player.fetchPlayers();
+			Iterator<Player> it = players.iterator();
+			JPanel det = (color == Color.WHITE) ? whiteDetails : blackDetails;
+			name = JOptionPane.showInputDialog(j, "Enter your name");
 
-			if (n != null) {
+			if (name != null) {
 
 				while (it.hasNext()) {
-					if (it.next().name().equals(n)) {
+					if (it.next().name().equals(name)) {
 						JOptionPane.showMessageDialog(j, "Player exists");
 						return;
 					}
 				}
 
-				if (n.length() != 0) {
-					Player tem = new Player(n);
-					tem.Update_Player();
-					if (color == 0)
-						White = tem;
+				if (name.length() != 0) {
+					Player tem = new Player(name);
+					tem.updatePlayer();
+					if (color == Color.WHITE)
+						whitePlayer = tem;
 					else
-						Black = tem;
-				} else
+						blackPlayer = tem;
+				}
+				else
 					return;
-			} else
+			}
+			else
 				return;
+
 			det.removeAll();
-			det.add(new JLabel(" " + n));
+			det.add(new JLabel(" " + name));
 			det.add(new JLabel(" 0"));
 			det.add(new JLabel(" 0"));
 			j.revalidate();
@@ -360,5 +360,4 @@ public class StatComposite extends JPanel {
 			selected = true;
 		}
 	}
-	
 }

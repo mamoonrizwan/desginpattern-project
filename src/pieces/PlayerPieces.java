@@ -41,6 +41,14 @@ public class PlayerPieces {
 		for (int i = 0; i < 8; i++) {
 			pawns[i] = new Pawn(initials + "P0" + (i + 1), color);
 		}
+
+		if (color.equals(Color.WHITE)) {
+			king.setx(7);
+			king.sety(3);
+		} else {
+			king.setx(0);
+			king.sety(3);
+		}
 	}
 
 	public Rook getRook1() {
