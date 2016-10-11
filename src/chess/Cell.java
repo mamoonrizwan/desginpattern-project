@@ -17,7 +17,7 @@ public class Cell extends JPanel implements Cloneable{
 	private boolean ispossibledestination;
 	private JLabel content;
 	private Piece piece;
-	int x,y;                             //is public because this is to be accessed by all the other class
+	private int x,y;
 	private boolean isSelected=false;
 	private boolean ischeck=false;
 	
@@ -102,19 +102,19 @@ public class Cell extends JPanel implements Cloneable{
 		this.isSelected=false;
 	}
 	
-	public void setpossibledestination()     //Function to highlight a cell to indicate that it is a possible valid move
+	public void setPossibleDestination()     //Function to highlight a cell to indicate that it is a possible valid move
 	{
 		this.setBorder(BorderFactory.createLineBorder(Color.blue,4));
 		this.ispossibledestination=true;
 	}
 	
-	public void removepossibledestination()      //Remove the cell from the list of possible moves
+	public void clearPossibleDestination()      //Remove the cell from the list of possible moves
 	{
 		this.setBorder(null);
 		this.ispossibledestination=false;
 	}
 	
-	public boolean ispossibledestination()    //Function to check if the cell is a possible destination 
+	public boolean isPossibleDestination()    //Function to check if the cell is a possible destination 
 	{
 		return this.ispossibledestination;
 	}
@@ -138,5 +138,13 @@ public class Cell extends JPanel implements Cloneable{
 	public boolean ischeck()    //Function to check if the current cell is in check
 	{
 		return ischeck;
+	}
+	
+	public int getx() {
+		return x;
+	}
+	
+	public int gety() {
+		return y;
 	}
 }

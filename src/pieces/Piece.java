@@ -1,5 +1,6 @@
 package pieces;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import chess.Cell;
@@ -14,11 +15,11 @@ import chess.Cell;
 public abstract class Piece implements Cloneable{
 
 	//Member Variables
-	private int color;
+	private Color color;
 	private String id=null;
 	private String path;
-	protected ArrayList<Cell> possiblemoves = new ArrayList<Cell>();  //Protected (access from child classes)
-	public abstract ArrayList<Cell> move(Cell pos[][],int x,int y);  //Abstract Function. Must be overridden
+	protected ArrayList<Cell> possibleMoves = new ArrayList<Cell>();  //Protected (access from child classes)
+	public abstract ArrayList<Cell> possibleMovesCells(Cell pos[][],int x,int y);  //Abstract Function. Must be overridden
 	
 	//Id Setter
 	public void setId(String id)
@@ -33,7 +34,7 @@ public abstract class Piece implements Cloneable{
 	}
 	
 	//Color Setter
-	public void setColor(int c)
+	public void setColor(Color c)
 	{
 		this.color=c;
 	}
@@ -51,7 +52,7 @@ public abstract class Piece implements Cloneable{
 	}
 	
 	//Color Getter
-	public int getcolor()
+	public Color getcolor()
 	{
 		return this.color;
 	}
