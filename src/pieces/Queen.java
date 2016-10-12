@@ -12,6 +12,7 @@ import chess.Cell;
 public class Queen extends Piece {
 	private static final String WHITE_QUEEN_IMAGE = "White_Queen.png";
 	private static final String BLACK_QUEEN_IMAGE = "Black_Queen.png";
+	private QueenMoves chessmoves ;
 
 	// Constructors
 	public Queen(String i, Color c) {
@@ -19,6 +20,7 @@ public class Queen extends Piece {
 		setImagePath(c.equals(Color.WHITE) ? WHITE_QUEEN_IMAGE
 				: BLACK_QUEEN_IMAGE);
 		setColor(c);
+		chessmoves = new QueenMoves();
 	}
 
 	// Move Function Defined
@@ -29,147 +31,15 @@ public class Queen extends Piece {
 		// The possible moves of queen is a combination of Rook and Bishop
 		possibleMoves.clear();
 
-		addLeftMoves(state, x, y);
-		addRightMoves(state, x, y);
-		addDownwardMoves(state, x, y);
-		addUpwardMoves(state, x, y);
-		addDiagonal1Moves(state, x, y);
-		addDiagonal2Moves(state, x, y);
-		addDiagonal3Moves(state, x, y);
-		addDiagonal4Moves(state, x, y);
+		chessmoves.addLeftMoves(this, state, x, y);
+		chessmoves.addRightMoves(this, state, x, y);
+		chessmoves.addDownwardMoves(this, state, x, y);
+		chessmoves.addUpwardMoves(this, state, x, y);
+		chessmoves.addDiagonal1Moves(this, state, x, y);
+		chessmoves.addDiagonal2Moves(this, state, x, y);
+		chessmoves.addDiagonal3Moves(this, state, x, y);
+		chessmoves.addDiagonal4Moves(this, state, x, y);
 
 		return possibleMoves;
-	}
-
-	private void addDiagonal4Moves(Cell[][] state, int x, int y) {
-		int tempx = x + 1;
-		int tempy = y + 1;
-		while (tempx < 8 && tempy < 8) {
-			if (state[tempx][tempy].getpiece() == null)
-				possibleMoves.add(state[tempx][tempy]);
-			else if (state[tempx][tempy].getpiece().getcolor() == this
-					.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[tempx][tempy]);
-				break;
-			}
-			tempx++;
-			tempy++;
-		}
-	}
-
-	private void addDiagonal3Moves(Cell[][] state, int x, int y) {
-		int tempx = x - 1;
-		int tempy = y - 1;
-		while (tempx >= 0 && tempy >= 0) {
-			if (state[tempx][tempy].getpiece() == null)
-				possibleMoves.add(state[tempx][tempy]);
-			else if (state[tempx][tempy].getpiece().getcolor() == this
-					.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[tempx][tempy]);
-				break;
-			}
-			tempx--;
-			tempy--;
-		}
-	}
-
-	private void addDiagonal2Moves(Cell[][] state, int x, int y) {
-		int tempx = x - 1;
-		int tempy = y + 1;
-		while (tempx >= 0 && tempy < 8) {
-			if (state[tempx][tempy].getpiece() == null)
-				possibleMoves.add(state[tempx][tempy]);
-			else if (state[tempx][tempy].getpiece().getcolor() == this
-					.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[tempx][tempy]);
-				break;
-			}
-			tempx--;
-			tempy++;
-		}
-	}
-
-	private void addDiagonal1Moves(Cell[][] state, int x, int y) {
-		int tempx = x + 1;
-		int tempy = y - 1;
-		while (tempx < 8 && tempy >= 0) {
-			if (state[tempx][tempy].getpiece() == null)
-				possibleMoves.add(state[tempx][tempy]);
-			else if (state[tempx][tempy].getpiece().getcolor() == this
-					.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[tempx][tempy]);
-				break;
-			}
-			tempx++;
-			tempy--;
-		}
-	}
-
-	private void addUpwardMoves(Cell[][] state, int x, int y) {
-		int tempy = y + 1;
-		while (tempy < 8) {
-			if (state[x][tempy].getpiece() == null)
-				possibleMoves.add(state[x][tempy]);
-			else if (state[x][tempy].getpiece().getcolor() == this.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[x][tempy]);
-				break;
-			}
-			tempy++;
-		}
-	}
-
-	private void addDownwardMoves(Cell[][] state, int x, int y) {
-		int tempy = y - 1;
-		while (tempy >= 0) {
-			if (state[x][tempy].getpiece() == null)
-				possibleMoves.add(state[x][tempy]);
-			else if (state[x][tempy].getpiece().getcolor() == this.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[x][tempy]);
-				break;
-			}
-			tempy--;
-		}
-	}
-
-	private void addRightMoves(Cell[][] state, int x, int y) {
-		int tempx = x + 1;
-		while (tempx < 8) {
-			if (state[tempx][y].getpiece() == null)
-				possibleMoves.add(state[tempx][y]);
-			else if (state[tempx][y].getpiece().getcolor() == this.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[tempx][y]);
-				break;
-			}
-			tempx++;
-		}
-	}
-
-	private void addLeftMoves(Cell[][] state, int x, int y) {
-		int tempx = x - 1;
-		while (tempx >= 0) {
-			if (state[tempx][y].getpiece() == null)
-				possibleMoves.add(state[tempx][y]);
-			else if (state[tempx][y].getpiece().getcolor() == this.getcolor())
-				break;
-			else {
-				possibleMoves.add(state[tempx][y]);
-				break;
-			}
-			tempx--;
-		}
 	}
 }
